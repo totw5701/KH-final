@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BookMapper">
+	<insert id="insertBook" parameterType="book" >
+		INSERT INTO PRODUCTS VALUES(
+				PRO_NUM_SEQ.NEXTVAL,
+				#{pro_title},
+				#{writer},
+				#{pro_publisher},
+				TO_DATE(#{pro_date},'YYYYMMDD'),
+				#{price},
+				0,
+				#{pro_country},
+				#{pro_contents},
+				#{pro_image},
+				0
+		)
+		
+	</insert>
+
+
+	<select id="selectPagingProducts" parameterType="pagingInfo" resultType="book">
+        SELECT *
+ 		 FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY PRO_NUM) NUM
+             , A.*
+          FROM PRODUCTS A
+         ORDER BY PRO_NUM
+        )WHERE NUM BETWEEN #{from} AND #{count}
+    </select>
+
+    <select id="selectPageCountProducts" resultType='int'>
+        SELECT count(*) FROM PRODUCTS
+    </select>
+	
+	
+	<!-- 상품 전체 목록 -->
+	<select id="SelectProduct" parameterType="book" resultType="book">
+		SELECT * FROM PRODUCTS
+	</select>
+		
+	<!-- 상품 상세보기 -->
+    <select id="detailProduct" parameterType="book" resultType="book">
+        SELECT * FROM PRODUCTS
+        WHERE PRO_NUM = #{pro_num}
+    </select>
+    
+    <!-- 정렬 쿼리 -->
+    <select id="selectProductsOrdered" parameterType="orderInfo" resultType="book">
+        SELECT *
+ 		 FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY PRO_NUM) NUM
+             , A.*
+          FROM PRODUCTS A
+         ORDER BY #{orderBy}
+        )WHERE NUM BETWEEN #{from} AND #{count}
+    </select>
+
+    <!-- 최근 상품 검색 -->
+    <select id="selectProductsRecentProduct" parameterType="recentInfo" resultType="book">
+        SELECT *
+ 		 FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY PRO_NUM) NUM
+             , A.*
+          FROM PRODUCTS A
+         WHERE PRO_DATE >= #{date}  
+         ORDER BY PRO_NUM DESC
+        )WHERE NUM BETWEEN #{from} AND #{count}
+        
+    </select>
+
+    <select id="selectPageCountProductsRecentProduct" parameterType="recentInfo" resultType="int">
+        SELECT *
+        FROM PRODUCTS
+        WHERE PRO_DATE >= #{date}
+        ORDER BY PRO_DATE desc;
+    </select>
+
+    <!-- 필터링 쿼리 -->
+    <select id="selectProductsFiltered" parameterType="filterInfo" resultType="book">
+        SELECT *
+ 		 FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY PRO_NUM) NUM
+             , A.*
+          FROM PRODUCTS A
+         WHERE ${filterBy} >= #{keyword} 
+         ORDER BY PRO_NUM DESC
+        )WHERE NUM BETWEEN #{from} AND #{count}
+    </select>
+
+    <select id="selectProductsNotFiltered" parameterType="filterInfo" resultType="book">
+        SELECT *
+ 		 FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY PRO_NUM) NUM
+             , A.*
+          FROM PRODUCTS A
+         WHERE ${filterBy} != #{keyword}   
+         ORDER BY PRO_NUM DESC
+        )WHERE NUM BETWEEN #{from} AND #{count}
+        
+    </select>
+
+    <select id="selectPageCountProductsFiltered" parameterType="filterInfo" resultType="int">
+        SELECT count(*)
+        FROM PRODUCTS
+        WHERE ${filterBy} = #{keyword}
+        ORDER BY PRO_NUM desc
+    </select>
+
+    <select id="selectPageCountProductsNotFiltered" parameterType="filterInfo" resultType="int">
+        SELECT count(*)
+        FROM PRODUCTS
+        WHERE ${filterBy} != #{keyword}
+        ORDER BY PRO_NUM desc
+    </select>
+
+    <!-- 검색 쿼리 -->
+    <select id="selectProductsSearch" parameterType="SearchInfo" resultType="book">
+        SELECT *
+ 		 FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY PRO_NUM) NUM
+             , A.*
+          FROM PRODUCTS A
+         WHERE ${searchBy} LIKE '%${keyword}%' 
+         ORDER BY PRO_NUM DESC
+        )WHERE NUM BETWEEN #{from} AND #{count}
+        
+        
+    </select>
+
+    <select id="selectPageCountProductsSearch" parameterType="SearchInfo" resultType="int">
+        SELECT count(*)
+        FROM PRODUCTS
+        WHERE ${searchBy} LIKE '%${keyword}%'
+        ORDER BY PRO_NUM desc
+    </select>
+</mapper>

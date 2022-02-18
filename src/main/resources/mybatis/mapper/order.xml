@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OrderMapper">
+	<select id="ordercheck" parameterType="String" resultType="order">
+		SELECT ORDER_NUM,
+			ORDER_TITLE,
+			ORDER_USER,
+			ORDER_ADDRES,
+			ORDER_PRICE,
+			ORDER_CALL,
+			ORDER_DATE
+			FROM ORDERS WHERE ORDER_USER = #{username}
+	</select>
+	
+		<!-- 주문 전체 목록 -->
+	<insert id="InsertOrder" parameterType="order">
+		insert into ORDERS (ORDER_NUM, ORDER_SERIAL, ORDER_TITLE, ORDER_ADDRES, ORDER_PRICE, ORDER_USER, ORDER_NAME, ORDER_CALL, ORDER_PHONE, ORDER_DATE)
+		values(ORDER_SEQ.NEXTVAL, #{order_serial}, #{order_title}, #{order_addres}, #{order_price}, #{order_user}, #{order_name}, #{order_call}, #{order_phone}, SYSDATE)
+	</insert>
+
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.web.home.account.model.AccountDTO" alias="account"/>
+		<typeAlias type="com.web.home.book.model.BookDTO" alias="book"/>
+		<typeAlias type="com.web.home.order.model.OrderDTO" alias="order"/>
+		<typeAlias type="com.web.home.book.model.dto.PagingInfo" alias="pagingInfo"/>
+		<typeAlias type="com.web.home.book.model.dto.OrderInfo" alias="orderInfo"/>
+		<typeAlias type="com.web.home.book.model.dto.FilterInfo" alias="filterInfo"/>
+		<typeAlias type="com.web.home.book.model.dto.SearchInfo" alias="SearchInfo"/>
+		<typeAlias type="com.web.home.book.model.dto.RecentInfo" alias="recentInfo"/>
+		
+		
+	</typeAliases>
+</configuration>
